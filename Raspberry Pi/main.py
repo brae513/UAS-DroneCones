@@ -37,7 +37,7 @@ if __name__ == "__main__":
 	    if sys.argv[i].lower() == "headless":
                headless = True
         print("headless: "+str(headless))
-	main(headless)
+	    main(headless)
     except:
         print("shutting off light")
         app.setStatus(5)

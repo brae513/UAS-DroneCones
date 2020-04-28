@@ -20,12 +20,12 @@ def data_received(data):
     s.send(toSend)
     print("Sent!")
 
-#Send message to phone
-def sendMsg(msg):
-    global s
-    print("sendMsg=Sending: "+str(msg))
-    s.send(msg)
-    print("Sent!")
+#Checks the global reset variable and resets it
+def getReset():
+    global reset
+    temp = reset
+    reset = False
+    return temp
 
 #Set the status of a cone on the app
 def setStatus(newStatus):
@@ -36,16 +36,7 @@ def setStatus(newStatus):
             toSend = "1:" + str(status)
             s.send(toSend)
 
-
-def getReset():
-    global reset
-    temp = reset
-    reset = False
-    return temp
-
-def getStatus():
-    return status
-
+#used to ensure the bluetoothServer is setup and the file loads
 def startUp():
     return 0
 

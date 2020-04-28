@@ -1,5 +1,4 @@
 import RPi.GPIO as GPIO
-import time
 lightPin = 21
 
 GPIO.setmode(GPIO.BCM)
