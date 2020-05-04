@@ -26,6 +26,7 @@ public class BluetoothHandler {
 
     }
 
+    //Need to set this up to allow for multiple cones
     public ArrayList<BluetoothDevice> getDevices(){
         Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
         ArrayList<BluetoothDevice> out = new ArrayList<>();

@@ -75,12 +75,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Setups the logic for the check status button
         Button check_status = findViewById(R.id.status_check);
         check_status.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                //Error checking function
                 if (btChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
                     BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                    //Checks if the phone bluetooth is turned on
                     if(!mBluetoothAdapter.isEnabled()){
                         status.setText("Phone bluetooth is disabled. Please enable to use the app.");
                         coneText.get(0).setText("Cone 1");
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         coneImages.get(0).setColorFilter(Color.RED);
                         coneImages.get(0).setVisibility(View.VISIBLE);
                     }
+                    //If the phone bluetooth is turned on and we get here, it means we have no connection to the Raspberry Pi
                     else{
                         status.setText("Connection to raspberry pi is lost. \nPlease ensure you're in range and the cone is powered.");
                         coneText.get(0).setText("Cone 1");
@@ -104,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        //Update the cones in the UI
         status = findViewById(R.id.status);
 
         coneText = new ArrayList<>();
@@ -128,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         coneImages.add((ImageView) findViewById(R.id.image4));
         coneImages.add((ImageView) findViewById(R.id.image5));
 
+        //Debug function to let you click on the cone status to tell the raspberry Pi it's triggered. Not used in code for Pi but good for helping debug
         for(int i=0;i<coneImages.size();i++){
             coneImages.get(i).setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -153,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Goes through the status array (needs to be implemented to have multiple cones) and updates based on status
     public void updateCones(){
         ArrayList<Integer> statuses = btHandler.getStatuses();
         //No cone connected
@@ -196,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //THIS NEEDS TO BE CHANGED
+    //TO-DO
+    //Connect will connect to the raspberry pi bluetooth address. This should be made to automatically detect the Bluetooth address instead of hardcoding
     public int connect(){
         String address = "B8:27:EB:52:A1:03";
         //Set<BluetoothDevice> devices = btHandler.
@@ -214,7 +224,8 @@ public class MainActivity extends AppCompatActivity {
 
         return -1;
     }
-
+    
+    //Send messages
     public void send(String message) {
         // Check that we're actually connected before trying anything
         if (btChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
@@ -246,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Parses a message sent in to get which cone # and what status
     public void parseMsg(String msg){
         ArrayList<Cone> newCones = new ArrayList<>();
         while(msg.contains(":")){
@@ -269,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
         //cones.get(i);
     }
 
+    //Handler for the bluetooth server 
     @SuppressLint("HandlerLeak")
     private final Handler test = new Handler(){
         @Override
